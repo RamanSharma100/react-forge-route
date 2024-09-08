@@ -54,6 +54,8 @@ export const Routes: React.FC<RouteProps> = ({ children }) => {
 
     if (route) {
       setCurrentRoute(route);
+    } else {
+      setCurrentRoute(null);
     }
 
     setRouteLoaded(true);

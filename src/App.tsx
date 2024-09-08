@@ -18,6 +18,9 @@ const App: React.FC = () => {
       <button type="button" onClick={() => navigate('/test2')}>
         test 2
       </button>
+      <button type="button" onClick={() => navigate('/not-found')}>
+        Route Not Available
+      </button>
       <button type="button" onClick={() => navigate(-1)}>
         GO Back
       </button>
