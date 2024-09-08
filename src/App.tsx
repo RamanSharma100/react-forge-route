@@ -9,6 +9,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" component={() => <h1>From Home Page</h1>} />
         <Route path="/test" component={() => <h1>From Test</h1>} />
+        <Route path="/test2" component={() => <h1>From Test 2</h1>} />
       </Routes>
 
       <button type="button" onClick={() => navigate('/test')}>

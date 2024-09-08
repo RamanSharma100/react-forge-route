@@ -10,6 +10,9 @@ export const Routes: React.FC<RouteProps> = ({ children }) => {
   const { getPath, addRoute, getRoutes, getParams } = useRouter();
   const currentPath: string = getPath();
   const [routeLoaded, setRouteLoaded] = React.useState<boolean>(false);
+  const [currentRoute, setCurrentRoute] = React.useState<RouteType | null>(
+    null
+  );
 
   const processRoutes = (children: React.ReactNode, parentPath = ''): void => {
     React.Children.forEach(children, (child) => {
@@ -43,19 +46,25 @@ export const Routes: React.FC<RouteProps> = ({ children }) => {
   };
 
   useEffect(() => {
+    setRouteLoaded(false);
+
     processRoutes(children);
+
+    const route = matchRoute(currentPath, getRoutes());
+
+    if (route) {
+      setCurrentRoute(route);
+    }
 
     setRouteLoaded(true);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentPath]);
 
   if (!routeLoaded) return null;
 
-  const route = matchRoute(currentPath, getRoutes());
-
-  if (route && route.component) {
-    const Component = route.component as React.ComponentType<any>;
+  if (currentRoute) {
+    const Component = currentRoute.component as React.ComponentType<any>;
     const params = getParams();
     const searchParams = new URLSearchParams(window.location.search);
 
@@ -77,7 +86,6 @@ const matchRoute = (path: string, routes: RouteType[]): RouteType | null => {
     let routePath = route.path.replace(/:[^\s/]+/g, '[^/]+');
     routePath = routePath.startsWith('/') ? routePath : `/${routePath}`;
     const regex = new RegExp(`^${routePath}$`);
-    console.log(regex);
     if (regex.test(path)) {
       return route;
     }
