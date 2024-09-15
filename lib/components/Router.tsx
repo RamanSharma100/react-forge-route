@@ -52,7 +52,7 @@ export const Router: FC<IRouterProps> = ({ children }) => {
         paramNames.forEach((name, index) => {
           params[name] = match[index + 1];
         });
-        console.log('matched route', route, params);
+
         return {
           ...route,
           params,
@@ -87,14 +87,12 @@ export const Router: FC<IRouterProps> = ({ children }) => {
   const getLocation = (): string => window.location.href;
 
   const getParams = (): Record<string, string> => {
-    console.log('routes', radixTree.getRoutes());
     const route = matchRoute(path);
-    console.log('route', route, path);
     if (route) {
       const paramNames = (route.path.match(/:[^\s/]+/g) || []).map((param) =>
         param.slice(1)
       );
-      console.log('paramNames', paramNames);
+
       const match = new RegExp(route.path.replace(/:[^\s/]+/g, '([^/]+)')).exec(
         path
       );
@@ -108,7 +106,7 @@ export const Router: FC<IRouterProps> = ({ children }) => {
   };
 
   const getParam = (key: string): string | null => {
-    const params = getParams();
+    const params: Record<string, string> = getParams();
     return params[key] || null;
   };
 
