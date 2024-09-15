@@ -4,6 +4,8 @@ export type Route = {
   path: string;
   exact?: boolean;
   group?: boolean;
+  isParam?: boolean;
+  paramName?: string;
   routes?: Route[];
 };
 
@@ -34,3 +36,9 @@ export type NavigationOptions<S = any> = {
   state?: S;
   replace?: boolean;
 };
+
+export interface ParameterizedRouteComponent {
+  params: Record<string, string>;
+  searchParams: URLSearchParams;
+  history: History;
+}

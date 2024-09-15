@@ -20,7 +20,7 @@ A React routing library inspired by [React Router Dom](https://reactrouter.com/w
 ## Usage
 
 ```tsx
-main.tsx;
+// main.tsx;
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -37,6 +37,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 ```
 
 ```tsx
+// App.tsx
+
 import { Route, Routes, useRouter } from 'react-forge-route'; // or import { Route, Routes, useRouter } from "../lib";
 
 const App: React.FC = () => {
@@ -49,6 +51,8 @@ const App: React.FC = () => {
         <Route path="/" component={() => <h1>From Home Page</h1>} />
         <Route path="/test" component={() => <h1>From Test</h1>} />
         <Route path="/test2" component={() => <h1>From Test 2</h1>} />
+        <Route path="/:param" component={ParameterizedComponent} />
+        <Route path="/:param/test/:param2" component={ParameterizedComponent} />
       </Routes>
     </div>
   );
@@ -57,11 +61,38 @@ const App: React.FC = () => {
 export default App;
 ```
 
+```tsx
+// ParameterizedComponent.tsx
+
+import { ParameterizedRouteComponent } from 'react-forge-route'; // or import { ParameterizedRouteComponent } from "../lib";
+
+interface IProps extends ParameterizedRouteComponent {}
+
+const ParameterizedComponent: React.FC<IProps> = ({ params }) => {
+  return <h1>From Param: {JSON.stringify(params)}</h1>;
+};
+
+export default ParameterizedComponent;
+```
+
+```tsx
+// ParameterizedComponent.tsx (with hooks)
+
+import { useParams } from 'react-forge-route'; // or import { useParams } from "../lib";
+
+const ParameterizedComponent: React.FC = () => {
+  const { getParams } = useParams();
+  return <h1>From Param: {JSON.stringify(getParams())}</h1>;
+};
+
+export default ParameterizedComponent;
+```
+
 ## Features
 
 - [x] Basic Routing
 - [ ] Nested Routing
-- [ ] Route Parameters
+- [x] Route Parameters
 - [ ] Route Guards
 - [x] Route Redirects
 - [ ] Route Lazy Loading

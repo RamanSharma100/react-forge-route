@@ -36,10 +36,27 @@ export const Router: FC<IRouterProps> = ({ children }) => {
   const matchRoute = (path: string) => {
     const routes = radixTree.getRoutes();
     for (const route of routes) {
-      const routePath = route.path.replace(/:[^\s/]+/g, '[^/]+');
-      const regex = new RegExp(`^${routePath}$`);
-      if (regex.test(path)) {
-        return route;
+      const fullRoutePath = route.path.startsWith('/')
+        ? route.path
+        : `/${route.path}`;
+      const regex = new RegExp(
+        `^${fullRoutePath.replace(/:[^\s/]+/g, '([^/]+)')}$`
+      );
+      const match = regex.exec(path);
+
+      if (match) {
+        const paramNames = (route.path.match(/:[^\s/]+/g) || []).map((param) =>
+          param.slice(1)
+        );
+        const params: Record<string, string> = {};
+        paramNames.forEach((name, index) => {
+          params[name] = match[index + 1];
+        });
+        console.log('matched route', route, params);
+        return {
+          ...route,
+          params,
+        };
       }
     }
     return null;
@@ -70,11 +87,14 @@ export const Router: FC<IRouterProps> = ({ children }) => {
   const getLocation = (): string => window.location.href;
 
   const getParams = (): Record<string, string> => {
+    console.log('routes', radixTree.getRoutes());
     const route = matchRoute(path);
+    console.log('route', route, path);
     if (route) {
       const paramNames = (route.path.match(/:[^\s/]+/g) || []).map((param) =>
         param.slice(1)
       );
+      console.log('paramNames', paramNames);
       const match = new RegExp(route.path.replace(/:[^\s/]+/g, '([^/]+)')).exec(
         path
       );

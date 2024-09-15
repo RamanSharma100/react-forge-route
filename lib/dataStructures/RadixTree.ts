@@ -33,12 +33,14 @@ export class RadixTree {
           path,
           component: node.component,
           exact: node.exact,
+          isParam: node.isParam,
+          paramName: node.paramName,
           children: [],
         });
       }
 
       for (const child of node.children.values()) {
-        dfs(child, path + child.path);
+        dfs(child, path + '/' + child.path);
       }
     };
 
@@ -53,6 +55,17 @@ export class RadixTree {
     for (const part of pathParts) {
       const isParam = part.startsWith(':');
       const pathPart = isParam ? part.slice(1) : part;
+
+      if (isParam) {
+        node.exact = false;
+      }
+      if (route.exact) {
+        node.exact = true;
+      }
+
+      if (!part.startsWith(':')) {
+        node.exact = true;
+      }
 
       if (!node.children.has(pathPart)) {
         node.children.set(pathPart, {

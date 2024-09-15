@@ -1,4 +1,5 @@
 import { Route, Routes, useRouter } from '../lib';
+import ParameterizedComponent from './ParameterizedComponent';
 
 const App: React.FC = () => {
   const { location, navigate } = useRouter();
@@ -10,6 +11,8 @@ const App: React.FC = () => {
         <Route path="/" component={() => <h1>From Home Page</h1>} />
         <Route path="/test" component={() => <h1>From Test</h1>} />
         <Route path="/test2" component={() => <h1>From Test 2</h1>} />
+        <Route path="/:param" component={ParameterizedComponent} />
+        <Route path="/:param/test/:param2" component={ParameterizedComponent} />
       </Routes>
 
       <button type="button" onClick={() => navigate('/test')}>

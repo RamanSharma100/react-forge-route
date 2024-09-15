@@ -21,6 +21,7 @@ import type {
   NavigationOptions,
   RouteContextProps,
   Route as RouteType,
+  ParameterizedRouteComponent,
 } from './types';
 
 export {
@@ -39,6 +40,11 @@ export {
   useRedirect,
 };
 
-export type { NavigationOptions, RouteContextProps, RouteType };
+export type {
+  NavigationOptions,
+  RouteContextProps,
+  RouteType,
+  ParameterizedRouteComponent,
+};
 
 export default Router;
