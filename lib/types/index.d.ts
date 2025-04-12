@@ -1,6 +1,6 @@
 export type Route = {
+  component: React.ReactElement<any, any> | React.ComponentType<any>;
   children?: Route[];
-  component: React.ComponentType<any>;
   path: string;
   exact?: boolean;
   group?: boolean;
