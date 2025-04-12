@@ -1,5 +1,5 @@
 export type Route = {
-  component: React.ReactElement<any, any> | React.ComponentType<any>;
+  component: React.ComponentType<any> | React.ReactElement<any, any>;
   children?: Route[];
   path: string;
   exact?: boolean;

@@ -27,6 +27,8 @@ export class RadixTree {
   getRoutes = (): Route[] => {
     const routes: Route[] = [];
 
+    console.log('getRoutes', this.root);
+
     const dfs = (node: RadixNode, path: string = '') => {
       if (node.component) {
         routes.push({
@@ -80,7 +82,7 @@ export class RadixTree {
       node = node.children.get(pathPart)!;
     }
 
-    node.component = route.component;
+    node.component = route.component as React.ComponentType<any>;
   };
 
   findRoute = (path: string): FindRouteReturnType | null => {

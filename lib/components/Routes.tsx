@@ -15,7 +15,11 @@ export const Routes: React.FC<RouteProps> = ({ children }) => {
   );
 
   const processRoutes = (children: React.ReactNode, parentPath = ''): void => {
-    React.Children.forEach(children, (child) => {
+    const sortedChildren = React.Children.toArray(children).sort((a) => {
+      const aPath = (a as React.ReactElement).props.path || '';
+      return aPath.startsWith(':') ? 1 : -1;
+    });
+    sortedChildren.forEach((child) => {
       if (!React.isValidElement(child)) return;
 
       const {
@@ -84,10 +88,12 @@ export const Routes: React.FC<RouteProps> = ({ children }) => {
 
 const matchRoute = (path: string, routes: RouteType[]): RouteType | null => {
   path = path.startsWith('/') ? path : `/${path}`;
+  console.log(routes);
   for (const route of routes) {
     let routePath = route.path.replace(/:[^\s/]+/g, '[^/]+');
     routePath = routePath.startsWith('/') ? routePath : `/${routePath}`;
     const regex = new RegExp(`^${routePath}$`);
+    console.log('Regex: ', regex);
     if (regex.test(path)) {
       return route;
     }
